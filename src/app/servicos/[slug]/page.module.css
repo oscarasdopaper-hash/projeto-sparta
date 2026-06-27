@@ -1,0 +1,865 @@
+.container {
+  /* Dynamic themes */
+  --bg-color: #09090b; /* Default dark */
+  --surface-color: rgba(255, 255, 255, 0.03);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Force layout to be full width on this page */
+:global(.global-main-content) {
+  padding: 0 !important;
+}
+:global(.global-main-container) {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* Force dark footer to match dark theme */
+:global(.global-footer) {
+  background-color: #09090b !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+
+/* Light mode support (can be toggled via JS or prefer-color-scheme) */
+@media (prefers-color-scheme: light) {
+  .container {
+    /* To support option 3 (automatic), uncomment these to enable light mode. 
+       For now, we enforce the dark premium look to match the Apple effect, but this allows flexibility.
+       Actually, to match the crypto theme perfectly, let's keep it strictly dark. 
+       If they want light mode, we will toggle a `.light` class instead. */
+  }
+}
+
+.container.lightTheme {
+  --bg-color: #fafbfc;
+  --surface-color: #ffffff;
+  --border-color: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--bg-color);
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* Tech grid background overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(var(--border-color) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+/* Seção Hero Estilo Crypto Premium */
+.premiumHero {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 24px;
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+.gridOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(var(--border-color) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 100px 100px;
+  background-position: center;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.heroSplitContent {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .heroSplitContent {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .heroText {
+    align-items: center;
+  }
+}
+
+.heroBadge {
+  background: color-mix(in srgb, var(--tenant-primary) 15%, transparent);
+  color: var(--tenant-primary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+}
+
+.cryptoTitle {
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.1;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.neonHighlight {
+  color: var(--tenant-primary);
+  text-shadow: 0 0 20px color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+}
+
+.cryptoSubtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 500px;
+}
+
+/* Prova Social no Hero */
+.heroProof {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-color);
+  background: #334155;
+  margin-left: -12px;
+}
+.avatar:first-child { margin-left: 0; background: #94a3b8; }
+.avatar:nth-child(2) { background: #64748b; }
+
+.proofText {
+  display: flex;
+  flex-direction: column;
+}
+
+.proofText strong {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.proofText span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cryptoCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--tenant-primary);
+  color: #000;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+}
+
+.cryptoCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px color-mix(in srgb, var(--tenant-primary) 50%, transparent);
+}
+
+/* Lado Direito / Imagem Flutuante */
+.heroGraphic {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.floatingMedia {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 24px;
+  transform: rotateY(-15deg) rotateX(5deg);
+  box-shadow: -20px 20px 60px rgba(0,0,0,0.5), 0 0 40px color-mix(in srgb, var(--tenant-primary) 20%, transparent);
+  animation: float 6s ease-in-out infinite;
+  object-fit: cover;
+}
+
+@keyframes float {
+  0% { transform: rotateY(-15deg) rotateX(5deg) translateY(0px); }
+  50% { transform: rotateY(-10deg) rotateX(8deg) translateY(-20px); }
+  100% { transform: rotateY(-15deg) rotateX(5deg) translateY(0px); }
+}
+
+.placeholderGraphic {
+  width: 300px;
+  height: 400px;
+  position: relative;
+}
+
+.neonCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid var(--tenant-primary);
+  box-shadow: 0 0 30px var(--tenant-primary), inset 0 0 30px var(--tenant-primary);
+  animation: pulseNeon 4s infinite alternate;
+}
+
+.neonCircleSmall {
+  position: absolute;
+  top: 60%;
+  left: 60%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--tenant-primary);
+  filter: blur(20px);
+  opacity: 0.5;
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulseNeon {
+  from { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* MARQUEE DINÂMICO */
+.marqueeContainer {
+  width: 100%;
+  background-color: var(--tenant-primary);
+  color: #000;
+  padding: 16px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--tenant-primary) 20%, transparent);
+  transform: rotate(-1deg) scale(1.02);
+  margin-top: -20px;
+  z-index: 20;
+}
+
+.marqueeContent {
+  display: inline-block;
+  animation: marqueeScroll 25s linear infinite;
+}
+
+.marqueeItem {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-right: 16px;
+}
+
+.marqueeItem strong {
+  font-weight: 900;
+}
+
+.marqueeDot {
+  color: rgba(0,0,0,0.4);
+  margin: 0 16px;
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.heroVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.4; /* dimmed to let the neon pop */
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
+  z-index: 1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 0 24px;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.heroContent::before {
+  content: 'ESPECIALISTAS DA REGIÃO';
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+}
+
+.title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+  color: var(--text-main);
+}
+
+.title span {
+  color: var(--tenant-primary);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--tenant-primary) 40%, transparent);
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 48px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: var(--tenant-primary);
+  color: #000000; /* Dark text for neon buttons usually looks best, or white depending on primary */
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 18px 40px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaButton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: all 0.5s;
+}
+
+.ctaButton:hover::after {
+  left: 100%;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px color-mix(in srgb, var(--tenant-primary) 50%, transparent);
+}
+
+/* CONTENT AREA WRAPPER */
+.contentWrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  position: relative;
+  z-index: 3;
+}
+
+/* DANGEROUSLY SET INNER HTML CSS - THE MAGIC HAPPENS HERE */
+.postContent {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.postContent h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 80px 0 32px 0;
+  letter-spacing: -0.02em;
+  display: block;
+}
+
+.postContent h2::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--tenant-primary);
+  box-shadow: 0 0 15px var(--tenant-primary);
+  margin-right: 16px;
+  margin-top: -6px;
+}
+
+.postContent h3 {
+  font-size: 1.8rem;
+  color: var(--text-main);
+  margin: 40px 0 20px 0;
+}
+
+.postContent p {
+  margin-bottom: 24px;
+}
+
+.postContent strong {
+  color: var(--text-main);
+}
+
+/* Apple-style Cards for Lists */
+.postContent ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin: 40px 0;
+}
+
+.postContent ul li {
+  flex: 1 1 300px;
+  max-width: 450px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 32px;
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.postContent ul li::before {
+  content: '0' counter(li-counter) '.';
+  counter-increment: li-counter;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--tenant-primary);
+  margin-bottom: 16px;
+}
+
+.postContent ul {
+  counter-reset: li-counter;
+}
+
+.postContent ul li:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 20px color-mix(in srgb, var(--tenant-primary) 5%, transparent);
+}
+
+.bottomCta:hover {
+  border-color: color-mix(in srgb, var(--tenant-primary) 50%, transparent);
+  box-shadow: 0 10px 40px color-mix(in srgb, var(--tenant-primary) 10%, transparent);
+}
+
+/* =========================================
+   ESTILOS PARA O CONTEÚDO GERADO PELA IA 
+   (Classes definidas no Prompt)
+   ========================================= */
+
+.postContent :global(.premium-features) {
+  margin: 60px 0;
+  text-align: left;
+}
+
+.postContent :global(.premium-features h2) {
+  font-size: clamp(28px, 4vw, 40px);
+  margin-bottom: 12px;
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+.postContent :global(.highlight) {
+  color: var(--tenant-primary);
+}
+
+.postContent :global(.features-subtitle) {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+.postContent :global(.cards-wrapper) {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.postContent :global(.feature-card) {
+  flex: 1 1 300px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px 32px;
+  border-radius: 24px;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.postContent :global(.feature-card:hover) {
+  border-color: color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+}
+
+.postContent :global(.feature-card .card-number) {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--tenant-primary);
+  margin-bottom: 16px;
+}
+
+.postContent :global(.feature-card h3) {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.postContent :global(.feature-card p) {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* O card principal no meio (estilo Crypto verde neon) */
+.postContent :global(.active-card) {
+  background: var(--tenant-primary);
+  border-color: var(--tenant-primary);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px color-mix(in srgb, var(--tenant-primary) 20%, transparent);
+}
+
+.postContent :global(.active-card .card-number) {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.postContent :global(.active-card h3),
+.postContent :global(.active-card p) {
+  color: #000;
+}
+
+.postContent :global(.card-link) {
+  margin-top: auto;
+  padding-top: 24px;
+  font-weight: 800;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* Estatísticas flutuantes e gráfico simulado */
+.postContent :global(.premium-stats) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 80px 0;
+  padding: 40px;
+  background: radial-gradient(circle at left, rgba(255,255,255,0.05) 0%, transparent 50%);
+  border-radius: 24px;
+  border-left: 2px solid var(--tenant-primary);
+}
+
+@media (max-width: 768px) {
+  .postContent :global(.premium-stats) {
+    flex-direction: column;
+  }
+}
+
+.postContent :global(.stat-box) {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 32px;
+  border-radius: 20px;
+  text-align: center;
+  min-width: 250px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.postContent :global(.stat-box::before) {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--tenant-primary);
+  box-shadow: 0 0 15px var(--tenant-primary);
+}
+
+.postContent :global(.stat-value) {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--tenant-primary);
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+}
+
+.postContent :global(.stat-label) {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.postContent :global(.stat-text h3) {
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.postContent :global(.stat-text p) {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* FAQ PREMIUM */
+.postContent :global(.premium-faq) {
+  margin: 100px 0 60px 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.postContent :global(.premium-faq h2) {
+  font-size: clamp(28px, 4vw, 40px);
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.postContent :global(.premium-faq h2::before) {
+  display: none; /* Remove o ponto neon para o título do FAQ ficar centralizado perfeito */
+}
+
+.postContent :global(.faq-grid) {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.postContent :global(.faq-item) {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.postContent :global(.faq-item:hover) {
+  border-color: color-mix(in srgb, var(--tenant-primary) 30%, transparent);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.postContent :global(.faq-item summary) {
+  padding: 24px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  position: relative;
+  list-style: none; /* Remove seta padrão */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Remove seta padrão WebKit */
+.postContent :global(.faq-item summary::-webkit-details-marker) {
+  display: none;
+}
+
+/* Custom + Icon */
+.postContent :global(.faq-item summary::after) {
+  content: '+';
+  font-size: 24px;
+  color: var(--tenant-primary);
+  font-weight: 400;
+  transition: transform 0.3s ease;
+}
+
+.postContent :global(.faq-item[open] summary::after) {
+  content: '−';
+  transform: rotate(180deg);
+}
+
+.postContent :global(.faq-item[open]) {
+  border-color: var(--tenant-primary);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--tenant-primary) 15%, transparent);
+}
+
+.postContent :global(.faq-answer) {
+  padding: 0 24px 24px 24px;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.7;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 16px;
+  padding-top: 24px;
+  animation: fadeInDown 0.3s ease forwards;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* CTA Inferior */
+.bottomCta {
+  margin-top: 100px;
+  padding: 60px;
+  background: linear-gradient(135deg, var(--surface-color) 0%, transparent 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bottomCta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--tenant-primary) 10%, transparent) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.bottomCta h3 {
+  font-size: 2.5rem;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.bottomCta p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.8rem;
+  }
+  .postContent h2 {
+    font-size: 2rem;
+  }
+  .bottomCta {
+    padding: 40px 20px;
+  }
+}
