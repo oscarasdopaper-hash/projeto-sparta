@@ -2,6 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 import { getCompanyByDomain, getRedirectCompany, translations } from '@/lib/data';
 import styles from './layout.module.css';
 import HeroWrapper from './HeroWrapper';
@@ -10,7 +11,8 @@ import ClientWhatsApp from './components/ClientWhatsApp';
 import TopoFooter from './TopoFooter';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const domain = process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   if (!company) return {};
@@ -23,7 +25,8 @@ export default async function TenantLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const domain = process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   // Se a empresa não existir e não houver fallback, exibe erro simples

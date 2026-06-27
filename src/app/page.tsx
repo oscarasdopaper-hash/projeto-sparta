@@ -1,17 +1,15 @@
 import React from 'react';
 import { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { getCompanyByDomain, getCategories, getTerms } from '@/lib/data';
 import GlossaryExplorer from './GlossaryExplorer';
-
-interface Props {
-  params: Promise<{ domain: string }>;
-}
 
 export const revalidate = 60; // ISR cache
 
 // Geração de metadados dinâmicos para SEO
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { domain } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   if (!company) {
@@ -44,8 +42,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function GlossaryHomePage({ params }: Props) {
-  const { domain } = await params;
+export default async function GlossaryHomePage() {
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   if (!company) {
