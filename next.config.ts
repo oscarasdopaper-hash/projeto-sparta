@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/portal',
   eslint: {
     ignoreDuringBuilds: true,
   },
