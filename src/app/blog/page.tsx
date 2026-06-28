@@ -7,8 +7,9 @@ import styles from './blog.module.css';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: Promise<{ domain: string }> }) {
-  const { domain } = await params;
+export async function generateMetadata() {
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   if (!company) return {};
@@ -33,13 +34,15 @@ export async function generateMetadata({ params }: { params: Promise<{ domain: s
   };
 }
 
+import { headers } from 'next/headers';
+
 export default async function BlogIndexPage(props: {
-  params: Promise<{ domain: string }>;
   searchParams?: Promise<{ page?: string }>;
 }) {
-  const { domain } = await props.params;
   const searchParams = await props.searchParams;
   
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   if (!company) {
@@ -127,7 +130,7 @@ export default async function BlogIndexPage(props: {
               <div className={styles.featuredContent}>
                 <h2 className={styles.featuredTitle}>{featuredPost.title}</h2>
                 <div className={styles.date}>
-                  {new Date(featuredPost.created_at).toLocaleDateString(
+                  {new Date(featuredPost.updated_at || featuredPost.created_at || new Date()).toLocaleDateString(
                     company.language === 'en' ? 'en-US' : company.language === 'es' ? 'es-ES' : 'pt-BR', 
                     { day: 'numeric', month: 'long', year: 'numeric' }
                   )}
@@ -162,7 +165,7 @@ export default async function BlogIndexPage(props: {
                     <div className={styles.content}>
                       <h2 className={styles.title}>{post.title}</h2>
                       <div className={styles.date}>
-                        {new Date(post.created_at).toLocaleDateString(
+                        {new Date(post.updated_at || post.created_at || new Date()).toLocaleDateString(
                           company.language === 'en' ? 'en-US' : company.language === 'es' ? 'es-ES' : 'pt-BR', 
                           { day: 'numeric', month: 'long', year: 'numeric' }
                         )}
