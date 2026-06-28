@@ -127,7 +127,10 @@ export default async function BlogPostPage({
       logo: company.logo_url ? {
         '@type': 'ImageObject',
         url: company.logo_url
-      } : undefined
+      } : {
+        '@type': 'ImageObject',
+        url: `https://${domain}/icon.png`
+      }
     },
     description: post.content?.replace(/<[^>]*>?/gm, '').substring(0, 155)
   };
@@ -146,7 +149,7 @@ export default async function BlogPostPage({
         <h1 className={styles.postTitle}>{post.title}</h1>
         <div className={styles.postMeta}>
           <Calendar size={16} />
-          {new Date(post.created_at).toLocaleDateString(
+          {new Date(post.updated_at || post.created_at || new Date()).toLocaleDateString(
             company.language === 'en' ? 'en-US' : company.language === 'es' ? 'es-ES' : 'pt-BR', 
             { day: 'numeric', month: 'long', year: 'numeric' }
           )}

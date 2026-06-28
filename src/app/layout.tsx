@@ -37,6 +37,9 @@ export default async function TenantLayout({
   if (!company) {
     return (
       <html lang="pt-BR" className={`${outfit.variable} ${inter.variable}`}>
+        <head>
+          <meta name="robots" content="noindex, nofollow" />
+        </head>
         <body>
           <div className={styles.noTenantContainer}>
             <div className={styles.noTenantCard}>
@@ -67,6 +70,9 @@ export default async function TenantLayout({
     // Caso inativo e sem redirecionamento, mostra tela amigável de suspenso
     return (
       <html lang={company.language || 'pt-br'} className={`${outfit.variable} ${inter.variable}`}>
+        <head>
+          <meta name="robots" content="noindex, nofollow" />
+        </head>
         <body>
           <div className={styles.noTenantContainer}>
             <div className={styles.noTenantCard}>

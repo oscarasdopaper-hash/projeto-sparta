@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { cache } from 'react';
 
 export interface Company {
   id: string;
@@ -34,6 +35,8 @@ export interface Company {
   home_url?: string | null;
   created_at?: string;
   updated_at?: string;
+  whatsapp_phrases?: string[] | null;
+  whatsapp_avatar_url?: string | null;
 }
 
 export interface Category {
@@ -189,7 +192,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
 /**
  * Busca a empresa ativa pelo domínio ou slug.
  */
-export async function getCompanyByDomain(hostOrSlug: string): Promise<Company | null> {
+export const getCompanyByDomain = cache(async (hostOrSlug: string): Promise<Company | null> => {
   let target = hostOrSlug;
   if (target.includes('localhost') || target.includes('127.0.0.1')) {
     target = 'maben';
@@ -214,12 +217,12 @@ export async function getCompanyByDomain(hostOrSlug: string): Promise<Company | 
   }
 
   return data as Company;
-}
+});
 
 /**
  * Busca redirecionamento para outra empresa caso esteja inativo
  */
-export async function getRedirectCompany(company: Company): Promise<Company | null> {
+export const getRedirectCompany = cache(async (company: Company): Promise<Company | null> => {
   if (company.status === 'inactive' && company.redirect_to_company_id) {
     const { data } = await supabase
       .from('companies')
@@ -229,12 +232,12 @@ export async function getRedirectCompany(company: Company): Promise<Company | nu
     return data as Company | null;
   }
   return null;
-}
+});
 
 /**
  * Busca as categorias de uma empresa.
  */
-export async function getCategories(companyId: string): Promise<Category[]> {
+export const getCategories = cache(async (companyId: string): Promise<Category[]> => {
   const { data, error } = await supabase
     .from('categories')
     .select('*')
@@ -246,17 +249,17 @@ export async function getCategories(companyId: string): Promise<Category[]> {
     return [];
   }
   return data || [];
-}
+});
 
 /**
  * Busca termos publicados de uma empresa, com filtros opcionais.
  */
-export async function getTerms(params: {
+export const getTerms = cache(async (params: {
   companyId: string;
   letter?: string;
   categorySlug?: string;
   limit?: number;
-}): Promise<Term[]> {
+}): Promise<Term[]> => {
   let query = supabase
     .from('terms')
     .select('*, category:categories(*)')
@@ -294,12 +297,12 @@ export async function getTerms(params: {
     return [];
   }
   return data || [];
-}
+});
 
 /**
  * Busca um termo detalhado pelo slug e empresa.
  */
-export async function getTermBySlug(companyId: string, slug: string): Promise<Term | null> {
+export const getTermBySlug = cache(async (companyId: string, slug: string): Promise<Term | null> => {
   const { data, error } = await supabase
     .from('terms')
     .select('*, category:categories(*)')
@@ -314,12 +317,12 @@ export async function getTermBySlug(companyId: string, slug: string): Promise<Te
     return null;
   }
   return data;
-}
+});
 
 /**
  * Busca posts do blog
  */
-export async function getBlogPosts(companyId: string, limit?: number): Promise<BlogPost[]> {
+export const getBlogPosts = cache(async (companyId: string, limit?: number): Promise<BlogPost[]> => {
   let query = supabase
     .from('blog_posts')
     .select('*')
@@ -338,12 +341,12 @@ export async function getBlogPosts(companyId: string, limit?: number): Promise<B
     return [];
   }
   return data || [];
-}
+});
 
 /**
  * Busca posts do blog com paginação e contagem total
  */
-export async function getBlogPostsPaginated(companyId: string, limit: number, offset: number): Promise<{ posts: BlogPost[], totalCount: number }> {
+export const getBlogPostsPaginated = cache(async (companyId: string, limit: number, offset: number): Promise<{ posts: BlogPost[], totalCount: number }> => {
   const from = offset;
   const to = offset + limit - 1;
 
@@ -361,12 +364,12 @@ export async function getBlogPostsPaginated(companyId: string, limit: number, of
     return { posts: [], totalCount: 0 };
   }
   return { posts: data || [], totalCount: count || 0 };
-}
+});
 
 /**
  * Busca post específico do blog por slug
  */
-export async function getBlogPostBySlug(companyId: string, slug: string): Promise<BlogPost | null> {
+export const getBlogPostBySlug = cache(async (companyId: string, slug: string): Promise<BlogPost | null> => {
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')
@@ -381,12 +384,12 @@ export async function getBlogPostBySlug(companyId: string, slug: string): Promis
     return null;
   }
   return data;
-}
+});
 
 /**
  * Busca todos os Auto Links de uma empresa
  */
-export async function getAutoLinks(companyId: string): Promise<AutoLink[]> {
+export const getAutoLinks = cache(async (companyId: string): Promise<AutoLink[]> => {
   const { data, error } = await supabase
     .from('auto_links')
     .select('*')
@@ -397,7 +400,7 @@ export async function getAutoLinks(companyId: string): Promise<AutoLink[]> {
     return [];
   }
   return data || [];
-}
+});
 
 /**
  * Motor de Linkagem Automática (Auto-Linker)
@@ -467,7 +470,7 @@ export function applyAutoLinks(htmlContent: string, links: AutoLink[]): string {
 /**
  * Busca todas as Páginas Locais de uma empresa
  */
-export async function getLocalPages(companyId: string, limit: number = 100): Promise<LocalPage[]> {
+export const getLocalPages = cache(async (companyId: string, limit: number = 100): Promise<LocalPage[]> => {
   const { data, error } = await supabase
     .from('local_pages')
     .select('*, campaign:local_campaigns(*)')
@@ -481,12 +484,12 @@ export async function getLocalPages(companyId: string, limit: number = 100): Pro
     return [];
   }
   return data || [];
-}
+});
 
 /**
  * Busca uma Página Local específica pelo slug
  */
-export async function getLocalPageBySlug(companyId: string, slug: string): Promise<LocalPage | null> {
+export const getLocalPageBySlug = cache(async (companyId: string, slug: string): Promise<LocalPage | null> => {
   const { data, error } = await supabase
     .from('local_pages')
     .select('*, campaign:local_campaigns(*)')
@@ -500,4 +503,4 @@ export async function getLocalPageBySlug(companyId: string, slug: string): Promi
     return null;
   }
   return data;
-}
+});

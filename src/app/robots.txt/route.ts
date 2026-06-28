@@ -5,6 +5,7 @@ export async function GET(request: Request) {
   
   const robots = `User-agent: *
 Allow: /
+Disallow: /admin
 
 Sitemap: https://${host}/sitemap.xml
 `;
