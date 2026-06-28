@@ -34,6 +34,23 @@ export async function GET(
 
     const now = new Date().toISOString();
 
+    // Helper to safely parse dates and avoid 500 Internal Server Errors
+    const safeDate = (dateStr?: string | null, fallback?: string | null): string => {
+      try {
+        if (dateStr) {
+          const d = new Date(dateStr);
+          if (!isNaN(d.getTime())) return d.toISOString();
+        }
+        if (fallback) {
+          const d = new Date(fallback);
+          if (!isNaN(d.getTime())) return d.toISOString();
+        }
+      } catch (e) {
+        // ignore
+      }
+      return now;
+    };
+
     // 1. Home
     sitemapUrls.push({
       loc: `${baseUrl}/`,
@@ -61,7 +78,7 @@ export async function GET(
     for (const cat of categories) {
       sitemapUrls.push({
         loc: `${baseUrl}/categoria/${cat.slug}`,
-        lastmod: new Date(cat.created_at).toISOString(),
+        lastmod: safeDate(cat.created_at),
         priority: 0.7
       });
     }
@@ -70,7 +87,7 @@ export async function GET(
     for (const term of terms) {
       sitemapUrls.push({
         loc: `${baseUrl}/${term.slug}`,
-        lastmod: new Date(term.updated_at || term.created_at).toISOString(),
+        lastmod: safeDate(term.updated_at, term.created_at),
         priority: 0.8
       });
     }
@@ -79,7 +96,7 @@ export async function GET(
     for (const post of blogPosts) {
       sitemapUrls.push({
         loc: `${baseUrl}/blog/${post.slug}`,
-        lastmod: new Date(post.updated_at || post.created_at).toISOString(),
+        lastmod: safeDate(post.updated_at, post.created_at),
         priority: 0.8
       });
     }
@@ -88,7 +105,7 @@ export async function GET(
     for (const page of localPages) {
       sitemapUrls.push({
         loc: `${baseUrl}/servicos/${page.slug}`,
-        lastmod: new Date(page.updated_at || page.created_at).toISOString(),
+        lastmod: safeDate(page.updated_at, page.created_at),
         priority: 0.9 // Alta prioridade para SEO Local
       });
     }

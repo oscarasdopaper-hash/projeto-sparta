@@ -9,6 +9,10 @@ import HeroWrapper from './HeroWrapper';
 import ClientHeader from './ClientHeader';
 import ClientWhatsApp from './components/ClientWhatsApp';
 import TopoFooter from './TopoFooter';
+import { Outfit, Inter } from 'next/font/google';
+
+const outfit = Outfit({ subsets: ['latin'], display: 'swap', variable: '--font-outfit' });
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
@@ -32,7 +36,7 @@ export default async function TenantLayout({
   // Se a empresa não existir e não houver fallback, exibe erro simples
   if (!company) {
     return (
-      <html lang="pt-BR">
+      <html lang="pt-BR" className={`${outfit.variable} ${inter.variable}`}>
         <body>
           <div className={styles.noTenantContainer}>
             <div className={styles.noTenantCard}>
@@ -62,7 +66,7 @@ export default async function TenantLayout({
 
     // Caso inativo e sem redirecionamento, mostra tela amigável de suspenso
     return (
-      <html lang="pt-BR">
+      <html lang={company.language || 'pt-br'} className={`${outfit.variable} ${inter.variable}`}>
         <body>
           <div className={styles.noTenantContainer}>
             <div className={styles.noTenantCard}>
@@ -93,39 +97,42 @@ export default async function TenantLayout({
     .order('name');
 
   return (
-    <div 
-      className={styles.tenantLayout} 
-      style={{ '--tenant-primary': primaryColor } as React.CSSProperties}
-    >
-      {/* Header */}
-      {/* Header */}
-      <ClientHeader company={company} t={t} categories={categories || []} />
+    <html lang={lang} className={`${outfit.variable} ${inter.variable}`}>
+      <body>
+        <div 
+          className={styles.tenantLayout} 
+          style={{ '--tenant-primary': primaryColor } as React.CSSProperties}
+        >
+          {/* Header */}
+          <ClientHeader company={company} t={t} categories={categories || []} />
 
-      {/* Hero / A-Z Navigation (Conditional via Wrapper) */}
-      <HeroWrapper t={t} alphabet={alphabet} />
+          {/* Hero / A-Z Navigation (Conditional via Wrapper) */}
+          <HeroWrapper t={t} alphabet={alphabet} />
 
-      {/* Main Content */}
-      <main className={`${styles.mainContent} global-main-content`}>
-        <div className={`${styles.mainContainer} global-main-container`}>
-          {children}
+          {/* Main Content */}
+          <main className={`${styles.mainContent} global-main-content`}>
+            <div className={`${styles.mainContainer} global-main-container`}>
+              {children}
+            </div>
+          </main>
+
+          {/* Footer */}
+          <footer className={`${styles.footer} global-footer`}>
+            <div className={styles.footerContainer}>
+              <p>&copy; {new Date().getFullYear()} {company.name}. Todos os direitos reservados.</p>
+              <TopoFooter />
+            </div>
+          </footer>
+
+          {company.whatsapp_number && (
+            <ClientWhatsApp 
+              whatsappNumber={company.whatsapp_number}
+              phrases={company.whatsapp_phrases || []}
+              avatarUrl={company.whatsapp_avatar_url || ''}
+            />
+          )}
         </div>
-      </main>
-
-      {/* Footer */}
-      <footer className={`${styles.footer} global-footer`}>
-        <div className={styles.footerContainer}>
-          <p>&copy; {new Date().getFullYear()} {company.name}. Todos os direitos reservados.</p>
-          <TopoFooter />
-        </div>
-      </footer>
-
-      {company.whatsapp_number && (
-        <ClientWhatsApp 
-          whatsappNumber={company.whatsapp_number}
-          phrases={company.whatsapp_phrases || []}
-          avatarUrl={company.whatsapp_avatar_url || ''}
-        />
-      )}
-    </div>
+      </body>
+    </html>
   );
 }
