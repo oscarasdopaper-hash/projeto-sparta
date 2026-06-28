@@ -525,3 +525,60 @@
   color: var(--tenant-primary);
   transform: translateX(4px);
 }
+
+/* Mobile Hamburger Menu */
+.hamburgerBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--tenant-primary);
+}
+
+.hamburgerBtnLight {
+  color: white;
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .hamburgerBtn {
+    display: block;
+  }
+
+  .navLinks {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 24px;
+    flex-direction: column;
+    background-color: white;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    border: 1px solid var(--border-color);
+    z-index: 1000;
+  }
+
+  .navLinks.isOpen {
+    display: flex;
+  }
+
+  /* Make items full width on mobile */
+  .navLinks > * {
+    width: 100%;
+    text-align: center;
+    display: block;
+  }
+}

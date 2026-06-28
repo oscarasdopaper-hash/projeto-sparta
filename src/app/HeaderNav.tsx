@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 import styles from './layout.module.css';
 
 interface HeaderNavProps {
@@ -16,14 +17,26 @@ interface HeaderNavProps {
 
 export default function HeaderNav({ company, t, categories = [], isLandingPage = false }: HeaderNavProps) {
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // A lógica para saber se está ativo
   const isBlog = pathname?.startsWith('/blog');
   const isCategory = pathname?.startsWith('/categoria/');
   const isGlossary = !isBlog && !isCategory && pathname === '/'; 
 
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
-    <div style={{ display: 'flex', gap: isLandingPage ? '32px' : '8px', alignItems: 'center' }}>
+    <div className={styles.navContainer}>
+      <button 
+        className={`${styles.hamburgerBtn} ${isLandingPage ? styles.hamburgerBtnLight : ''}`} 
+        onClick={toggleMenu}
+        aria-label="Menu"
+      >
+        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      <div className={`${styles.navLinks} ${isMenuOpen ? styles.isOpen : ''}`} style={isLandingPage ? { gap: '32px' } : {}}>
       {/* Botão Home / Início (Externo) */}
       {company.home_url && (
         <a 
@@ -118,6 +131,7 @@ export default function HeaderNav({ company, t, categories = [], isLandingPage =
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
