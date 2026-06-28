@@ -7,8 +7,10 @@ import styles from './categoria.module.css';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: Promise<{ domain: string, slug: string }> }) {
-  const { domain, slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
   if (!company) return { title: 'Not Found' };
 
@@ -30,8 +32,10 @@ export async function generateMetadata({ params }: { params: Promise<{ domain: s
   };
 }
 
+import { headers } from 'next/headers';
+
 interface Props {
-  params: Promise<{ domain: string, slug: string }>;
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ page?: string }>;
 }
 
@@ -41,7 +45,9 @@ export default async function CategoryHubPage({
   params,
   searchParams
 }: Props) {
-  const { domain, slug } = await params;
+  const { slug } = await params;
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
 
   if (!company) {

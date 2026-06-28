@@ -14,7 +14,9 @@ interface Props {
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { domain, letter } = await params;
+  const { letter } = await params;
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
   if (!company) return {};
 
@@ -26,11 +28,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+import { headers } from 'next/headers';
+
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const ITEMS_PER_PAGE = 12;
 
 export default async function LetterPage({ params, searchParams }: Props) {
-  const { domain, letter } = await params;
+  const { letter } = await params;
+  const headersList = await headers();
+  const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
   if (!company) return notFound();
 
