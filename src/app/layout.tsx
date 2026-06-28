@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { getCompanyByDomain, getRedirectCompany, translations } from '@/lib/data';
 import styles from './layout.module.css';
-import HeroWrapper from './HeroWrapper';
 import ClientHeader from './ClientHeader';
 import ClientWhatsApp from './components/ClientWhatsApp';
 import TopoFooter from './TopoFooter';
@@ -111,9 +110,6 @@ export default async function TenantLayout({
         >
           {/* Header */}
           <ClientHeader company={company} t={t} categories={categories || []} />
-
-          {/* Hero / A-Z Navigation (Conditional via Wrapper) */}
-          <HeroWrapper t={t} alphabet={alphabet} />
 
           {/* Main Content */}
           <main className={`${styles.mainContent} global-main-content`}>

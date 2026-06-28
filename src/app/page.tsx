@@ -1,8 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
-import { getCompanyByDomain, getCategories, getTerms } from '@/lib/data';
+import { getCompanyByDomain, getCategories, getTerms, translations } from '@/lib/data';
 import GlossaryExplorer from './GlossaryExplorer';
+import ServerHero from './ServerHero';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,12 +72,17 @@ export default async function GlossaryHomePage() {
     }
   };
 
+  const lang = company.language || 'pt-br';
+  const t = translations[lang] || translations['pt-br'];
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}
       />
+      <ServerHero t={t} alphabet={alphabet} />
       <GlossaryExplorer 
         company={company} 
         categories={categories} 
