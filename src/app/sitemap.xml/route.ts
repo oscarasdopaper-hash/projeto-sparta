@@ -4,12 +4,9 @@ import { getCompanyByDomain, getTerms, getBlogPosts, getCategories, getLocalPage
 // Cache da rota por 1 hora
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ domain: string }> }
-) {
+export async function GET(request: Request) {
   try {
-    const { domain } = await params;
+    const domain = request.headers.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
     const company = await getCompanyByDomain(domain);
 
     if (!company) {
