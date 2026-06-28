@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 
 export interface Company {
   id: string;
@@ -192,7 +193,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
 /**
  * Busca a empresa ativa pelo domínio ou slug.
  */
-export const getCompanyByDomain = cache(async (hostOrSlug: string): Promise<Company | null> => {
+export const getCompanyByDomain = unstable_cache(async (hostOrSlug: string): Promise<Company | null> => {
   let target = hostOrSlug;
   if (target.includes('localhost') || target.includes('127.0.0.1')) {
     target = 'maben';
@@ -217,7 +218,7 @@ export const getCompanyByDomain = cache(async (hostOrSlug: string): Promise<Comp
   }
 
   return data as Company;
-});
+}, ['getCompanyByDomain'], { revalidate: 60, tags: ['companies'] });
 
 /**
  * Busca redirecionamento para outra empresa caso esteja inativo
@@ -237,7 +238,7 @@ export const getRedirectCompany = cache(async (company: Company): Promise<Compan
 /**
  * Busca as categorias de uma empresa.
  */
-export const getCategories = cache(async (companyId: string): Promise<Category[]> => {
+export const getCategories = unstable_cache(async (companyId: string): Promise<Category[]> => {
   const { data, error } = await supabase
     .from('categories')
     .select('*')
@@ -249,12 +250,12 @@ export const getCategories = cache(async (companyId: string): Promise<Category[]
     return [];
   }
   return data || [];
-});
+}, ['get_categories_terms'], { revalidate: 60 });
 
 /**
  * Busca termos publicados de uma empresa, com filtros opcionais.
  */
-export const getTerms = cache(async (params: {
+export const getTerms = unstable_cache(async (params: {
   companyId: string;
   letter?: string;
   categorySlug?: string;
@@ -297,7 +298,7 @@ export const getTerms = cache(async (params: {
     return [];
   }
   return data || [];
-});
+}, ['get_categories_terms'], { revalidate: 60 });
 
 /**
  * Busca um termo detalhado pelo slug e empresa.
