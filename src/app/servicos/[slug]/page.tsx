@@ -4,7 +4,7 @@ import { getCompanyByDomain, getLocalPageBySlug } from '@/lib/data';
 import styles from './page.module.css';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 
-export const revalidate = 60; // ISR cache
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ domain: string, slug: string }> }) {
   const { domain, slug } = await params;

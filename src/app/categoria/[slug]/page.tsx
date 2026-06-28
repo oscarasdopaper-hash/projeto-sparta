@@ -5,7 +5,7 @@ import { getCompanyByDomain, getTerms } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
 import styles from './categoria.module.css';
 
-export const revalidate = 3600; // Cache por 1 hora
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ domain: string, slug: string }> }) {
   const { domain, slug } = await params;

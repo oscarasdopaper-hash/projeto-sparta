@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Newspaper, ArrowRight, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './blog.module.css';
 
-export const revalidate = 60; // ISR cache por 60 segundos
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ domain: string }> }) {
   const { domain } = await params;

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getCompanyByDomain, getTerms, getBlogPosts, getCategories, getLocalPages } from '@/lib/data';
 
 // Cache da rota por 1 hora
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: Request,

@@ -11,7 +11,7 @@ interface Props {
   searchParams: Promise<{ page?: string }>;
 }
 
-export const revalidate = 60; // ISR cache
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { domain, letter } = await params;

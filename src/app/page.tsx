@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { getCompanyByDomain, getCategories, getTerms } from '@/lib/data';
 import GlossaryExplorer from './GlossaryExplorer';
 
-export const revalidate = 60; // ISR cache
+export const dynamic = 'force-dynamic';
 
 // Geração de metadados dinâmicos para SEO
 export async function generateMetadata(): Promise<Metadata> {

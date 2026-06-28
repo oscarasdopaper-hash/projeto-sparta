@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import styles from '../blog.module.css';
 
-export const revalidate = 60; // ISR cache
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ domain: string, slug: string }> }) {
   const { domain, slug } = await params;
