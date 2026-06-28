@@ -32,16 +32,20 @@ export default async function TenantLayout({
   // Se a empresa não existir e não houver fallback, exibe erro simples
   if (!company) {
     return (
-      <div className={styles.noTenantContainer}>
-        <div className={styles.noTenantCard}>
-          <h1>Plataforma de Glossários SEO</h1>
-          <p>Nenhuma empresa configurada para o domínio <strong>{domain}</strong>.</p>
-          <p className={styles.subText}>Crie e configure esta empresa no painel administrativo.</p>
-          <Link href="/admin" className={styles.adminLink}>
-            Ir para o Painel Admin
-          </Link>
-        </div>
-      </div>
+      <html lang="pt-BR">
+        <body>
+          <div className={styles.noTenantContainer}>
+            <div className={styles.noTenantCard}>
+              <h1>Plataforma de Glossários SEO</h1>
+              <p>Nenhuma empresa configurada para o domínio <strong>{domain}</strong>.</p>
+              <p className={styles.subText}>Verifique se as chaves do Supabase estão corretas ou crie a empresa no painel administrativo.</p>
+              <Link href="/admin" className={styles.adminLink}>
+                Ir para o Painel Admin
+              </Link>
+            </div>
+          </div>
+        </body>
+      </html>
     );
   }
 
@@ -58,13 +62,17 @@ export default async function TenantLayout({
 
     // Caso inativo e sem redirecionamento, mostra tela amigável de suspenso
     return (
-      <div className={styles.noTenantContainer}>
-        <div className={styles.noTenantCard}>
-          <h1 style={{ color: '#dc2626' }}>Serviço Temporariamente Suspenso</h1>
-          <p>O glossário de <strong>{company.name}</strong> encontra-se temporariamente indisponível.</p>
-          <p className={styles.subText}>Se você é o proprietário, entre em contato com a agência de suporte.</p>
-        </div>
-      </div>
+      <html lang="pt-BR">
+        <body>
+          <div className={styles.noTenantContainer}>
+            <div className={styles.noTenantCard}>
+              <h1 style={{ color: '#dc2626' }}>Serviço Temporariamente Suspenso</h1>
+              <p>O glossário de <strong>{company.name}</strong> encontra-se temporariamente indisponível.</p>
+              <p className={styles.subText}>Se você é o proprietário, entre em contato com a agência de suporte.</p>
+            </div>
+          </div>
+        </body>
+      </html>
     );
   }
 
