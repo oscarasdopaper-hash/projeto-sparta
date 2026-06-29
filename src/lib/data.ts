@@ -310,7 +310,6 @@ export const getTermBySlug = cache(async (companyId: string, slug: string): Prom
     .eq('company_id', companyId)
     .eq('slug', slug)
     .eq('status', 'published')
-    .lte('created_at', new Date().toISOString())
     .single();
 
   if (error) {
@@ -377,7 +376,6 @@ export const getBlogPostBySlug = cache(async (companyId: string, slug: string): 
     .eq('company_id', companyId)
     .eq('slug', slug)
     .eq('status', 'published')
-    .lte('created_at', new Date().toISOString())
     .single();
 
   if (error) {
