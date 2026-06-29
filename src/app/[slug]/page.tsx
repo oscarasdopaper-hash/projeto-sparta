@@ -16,12 +16,13 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
   const headersList = await headers();
   const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
   if (!company) return {};
 
-  const term = await getTermBySlug(company.id, slug);
+  const term = await getTermBySlug(company.id, decodedSlug);
   if (!term) return {};
 
   const imageUrl = term.image_url || company.default_term_image_url;
@@ -50,12 +51,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TermDetailPage({ params }: Props) {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
   const headersList = await headers();
   const domain = headersList.get('host') || process.env.NEXT_PUBLIC_CLIENT_ID || 'maben.com.br';
   const company = await getCompanyByDomain(domain);
   if (!company) return notFound();
 
-  const term = await getTermBySlug(company.id, slug);
+  const term = await getTermBySlug(company.id, decodedSlug);
   if (!term) return notFound();
 
   const lang = company.language || 'pt-br';
