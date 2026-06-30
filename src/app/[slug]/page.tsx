@@ -169,9 +169,9 @@ export default async function TermDetailPage({ params }: Props) {
               <div className={styles.metaItem}>
                 <Calendar size={16} />
                 <span>
-                  {t.publishedAt} {new Date(term.updated_at || term.created_at || new Date()).toLocaleDateString(
+                  {t.publishedAt} {new Date(term.created_at || new Date()).toLocaleDateString(
                     lang === 'en' ? 'en-US' : lang === 'es' ? 'es-ES' : 'pt-BR', 
-                    { day: 'numeric', month: 'long', year: 'numeric' }
+                    { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' }
                   )}
                 </span>
               </div>
