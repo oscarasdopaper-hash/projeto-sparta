@@ -148,7 +148,7 @@ export default async function BlogPostPage({
           <Calendar size={16} />
           {new Date(post.created_at).toLocaleDateString(
             company.language === 'en' ? 'en-US' : company.language === 'es' ? 'es-ES' : 'pt-BR', 
-            { day: 'numeric', month: 'long', year: 'numeric' }
+            { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' }
           )}
         </div>
       </header>
