@@ -20,7 +20,56 @@ export async function generateMetadata(): Promise<Metadata> {
 
   if (!company) return {};
 
-  return {};
+  const siteName = company.name || 'Glossário';
+  const defaultDesc = company.description || `Explore o glossário e artigos de ${siteName}.`;
+  
+  // Define fallback images for OG based on user comments (master images)
+  const defaultOgImage = company.logo_url || `https://${domain}/default-og-image.jpg`;
+
+  return {
+    title: {
+      default: siteName,
+      template: `%s | ${siteName}`,
+    },
+    description: defaultDesc,
+    metadataBase: new URL(`https://${domain}`),
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      title: siteName,
+      description: defaultDesc,
+      url: `https://${domain}`,
+      siteName: siteName,
+      images: [
+        {
+          url: defaultOgImage,
+          width: 1200,
+          height: 630,
+          alt: siteName,
+        },
+      ],
+      locale: company.language || 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: siteName,
+      description: defaultDesc,
+      images: [defaultOgImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
 }
 
 export default async function TenantLayout({
@@ -101,8 +150,30 @@ export default async function TenantLayout({
     .eq('company_id', company.id)
     .order('name');
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: company.name,
+    url: `https://${domain}`,
+    description: company.description || '',
+    publisher: {
+      '@type': 'Organization',
+      name: company.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: company.logo_url || `https://${domain}/default-og-image.jpg`
+      }
+    }
+  };
+
   return (
     <html lang={lang} className={`${outfit.variable} ${inter.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <div 
           className={styles.tenantLayout} 

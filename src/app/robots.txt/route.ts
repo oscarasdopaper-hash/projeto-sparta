@@ -7,6 +7,27 @@ export async function GET(request: Request) {
 Allow: /
 Disallow: /admin
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
 Sitemap: https://${host}/sitemap.xml
 `;
 
