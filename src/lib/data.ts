@@ -250,7 +250,7 @@ export const getCategories = unstable_cache(async (companyId: string): Promise<C
     return [];
   }
   return data || [];
-}, ['get_categories_terms'], { revalidate: 60 });
+}, ['get_categories_v2'], { revalidate: 60 });
 
 /**
  * Busca termos publicados de uma empresa, com filtros opcionais.
@@ -298,7 +298,7 @@ export const getTerms = unstable_cache(async (params: {
     return [];
   }
   return data || [];
-}, ['get_categories_terms'], { revalidate: 60 });
+}, ['get_terms_v2'], { revalidate: 60 });
 
 /**
  * Busca um termo detalhado pelo slug e empresa.
